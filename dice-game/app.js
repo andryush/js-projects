@@ -8,3 +8,111 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
+var scores, roundScore, activePlayer, gamePlaying;
+
+init();
+
+// Adding event listener to Roll Dice button
+document.querySelector('.btn-roll').addEventListener('click', function () {
+
+    if (gamePlaying) {
+        // Adding random dice 1 - 6
+        var dice = Math.floor((Math.random() * 6) + 1);
+
+        // Adding random dice to dice in DOM
+        var diceDOM = document.querySelector('.dice')
+        diceDOM.style.display = 'block';
+        diceDOM.src = 'dice-' + dice + '.png';
+
+
+        // Adding a statement
+        if (dice !== 1) {
+            roundScore += dice;
+            document.getElementById('current-' + activePlayer).textContent = roundScore;
+        } else {
+            nextPlayer();
+        }
+    }
+
+});
+
+// Adding event listener to HOLD button
+document.querySelector('.btn-hold').addEventListener('click', function () {
+
+    if (gamePlaying) {
+        // Adding current score to Global
+        scores[activePlayer] += roundScore;
+
+        // Updating the UI
+        document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
+
+        // Checking the winner
+        if (scores[activePlayer] >= 100) {
+            document.getElementById('name-' + activePlayer).textContent = 'WINNER :)';
+            document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
+            document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
+            gamePlaying = false;
+        } else {
+            // Changing player
+            nextPlayer();
+        }
+    }
+
+});
+
+
+// Adding event listener to new game button
+document.querySelector('.btn-new').addEventListener('click', init)
+
+
+// Adding function for change player
+function nextPlayer() {
+    // Changing active player
+    activePlayer === 1 ? activePlayer = 0 : activePlayer = 1;
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    // Hideing dice
+    document.querySelector('.dice').style.display = 'none';
+
+    // Setting current score to 0
+    roundScore = 0;
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+}
+
+// Adding function to start game
+function init() {
+    scores = [0, 0];
+    roundScore = 0;
+    activePlayer = 0;
+    gamePlaying = true;
+
+    // Hideing dice at start
+    document.querySelector('.dice').style.display = 'none';
+
+    // Setting to 0 global score
+    document.getElementById('score-0').textContent = '0';
+    document.getElementById('score-1').textContent = '0';
+
+    // Setting to 0 round score
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    // Setting to default players names
+    document.getElementById('name-0').textContent = 'Player 1';
+    document.getElementById('name-1').textContent = 'Player 2';
+
+    // Removing the winner class
+    document.querySelector('.player-0-panel').classList.remove('winner');
+    document.querySelector('.player-1-panel').classList.remove('winner');
+
+    // Removing the active class
+    document.querySelector('.player-0-panel').classList.remove('active');
+    document.querySelector('.player-1-panel').classList.remove('active');
+
+    document.querySelector('.player-0-panel').classList.add('active');
+}
+
+
