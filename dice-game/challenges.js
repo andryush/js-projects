@@ -8,7 +8,7 @@ GAME RULES:
 - The first player to reach 100 points on GLOBAL score wins the game
 
 */
-var scores, roundScore, activePlayer, gamePlaying;
+var scores, roundScore, activePlayer, gamePlaying, prevoiusDice;
 
 init();
 
@@ -18,27 +18,59 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
     if (gamePlaying) {
         // Adding random dice 1 - 6
         var dice = Math.floor((Math.random() * 6) + 1);
+        var dice2 = Math.floor((Math.random() * 6) + 1);
 
         // Adding random dice to dice in DOM
         var diceDOM = document.querySelector('.dice')
+        var diec2DOM = document.querySelector('.dice2');
+
         diceDOM.style.display = 'block';
+        diec2DOM.style.display = 'block';
+
         diceDOM.src = 'dice-' + dice + '.png';
-        console.log(dice);
+        diec2DOM.src = 'dice-' + dice2 + '.png';
+
+        console.log(dice, dice2);
 
 
         // Adding a statement
-        if (dice !== 1) {
-            roundScore += dice;
+
+        /* if (dice === 6 && dice2 === 6) {
+
+            document.getElementById('score-' + activePlayer).textContent = '0';
+            nextPlayer();
+
+        } else if (dice !== 1 && dice2 !== 1) {
+            roundScore += (dice + dice2);
+            document.getElementById('current-' + activePlayer).textContent = roundScore;
+        } else {
+            nextPlayer();
+        } */
+
+        if (dice !== 1 && dice2 !== 1) {
+            roundScore += (dice + dice2);
             document.getElementById('current-' + activePlayer).textContent = roundScore;
         } else {
             nextPlayer();
         }
+
+        //prevoiusDice = dice;
     }
 
 });
 
 // Adding event listener to HOLD button
 document.querySelector('.btn-hold').addEventListener('click', function () {
+
+    var inputScore = document.getElementById('scoreInput').value;
+    var winningScore;
+
+    if (inputScore) {
+        winningScore = inputScore;
+    } else {
+        winningScore = 100;
+    }
+
 
     if (gamePlaying) {
         // Adding current score to Global
@@ -48,7 +80,7 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
         document.getElementById('score-' + activePlayer).textContent = scores[activePlayer];
 
         // Checking the winner
-        if (scores[activePlayer] >= 100) {
+        if (scores[activePlayer] >= winningScore) {
             document.getElementById('name-' + activePlayer).textContent = 'WINNER :)';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
             document.querySelector('.player-' + activePlayer + '-panel').classList.remove('active');
@@ -75,6 +107,8 @@ function nextPlayer() {
 
     // Hideing dice
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice2').style.display = 'none';
+
 
     // Setting current score to 0
     roundScore = 0;
@@ -92,6 +126,7 @@ function init() {
 
     // Hideing dice at start
     document.querySelector('.dice').style.display = 'none';
+    document.querySelector('.dice2').style.display = 'none';
 
     // Setting to 0 global score
     document.getElementById('score-0').textContent = '0';
