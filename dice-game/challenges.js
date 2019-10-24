@@ -106,8 +106,8 @@ function nextPlayer() {
     document.querySelector('.player-1-panel').classList.toggle('active');
 
     // Hideing dice
-    document.querySelector('.dice').style.display = 'none';
-    document.querySelector('.dice2').style.display = 'none';
+    //document.querySelector('.dice').style.display = 'none';
+    //document.querySelector('.dice2').style.display = 'none';
 
 
     // Setting current score to 0
