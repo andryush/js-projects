@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {API} from '../../../config' 
 
 // Creating Search class
 export default class Search {
@@ -10,7 +11,7 @@ export default class Search {
     async getResults() {
         try {
             // Making AJAX using axios
-            const results = await axios(`https://forkify-api.herokuapp.com/api/search?q=${this.query}`);
+            const results = await axios(`${API}/search?q=${this.query}`);
 
             // recived JSON 
             this.result = results.data.recipes;
