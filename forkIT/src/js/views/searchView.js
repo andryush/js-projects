@@ -18,7 +18,7 @@ export const clearResults = () => {
 
 
 // Cutting titles if they are too long
-const limitTitle = (title, limit = 17) => {
+export const limitTitle = (title, limit = 17) => {
     const newTitle = [];
     if (title.length > limit) {
         title.split(' ').reduce((acc, cur) => {
@@ -99,4 +99,16 @@ export const renderResults = (recipes, page = 1, resPerPage = 10) => {
     recipes.slice(start, end).forEach(el => renderRecipe(el));
 
     renderButtons(page, recipes.length, resPerPage);
+}
+
+// Highlight selected item in search results
+export const highlightSelected = (id) => {
+
+    const resultsArr = Array.from(document.querySelectorAll('.results__link'));
+
+    resultsArr.forEach((el) => {
+        el.classList.remove('results__link--active');
+    })
+    
+    document.querySelector(`.results__link[href*="#${id}"]`).classList.add('results__link--active');
 }
