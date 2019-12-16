@@ -13,9 +13,6 @@ import * as likesView from './views/likesView';
 
 // State
 const state = {};
-window.state = state;
-
-
 
 //////////////////////
 //Search controller///
@@ -155,11 +152,6 @@ elements.shopping.addEventListener('click', e => {
 //////////////////////
 
 
-//TESTING
-state.likes = new Likes();
-likesView.toggleLikeMenu(state.likes.getNumLikes())
-
-
 const controlLike = () => {
     if (!state.likes) {
         state.likes = new Likes();
@@ -183,7 +175,6 @@ const controlLike = () => {
 
         // Add like to the UI list
         likesView.renderLike(newLike)
-        console.log(state.likes)
     
     // User HAS liked current recipe
     } else {
@@ -195,12 +186,24 @@ const controlLike = () => {
 
         // Remove like from the UI list
         likesView.deleteLike(currentID);
-        console.log(state.likes)
 
     }
     likesView.toggleLikeMenu(state.likes.getNumLikes())
 }
 
+// Restore liked recipes page reload
+window.addEventListener('load', () => {
+    state.likes = new Likes();
+
+    // Restore likes
+    state.likes.readStorage();
+
+    // Toggle like menu button
+    likesView.toggleLikeMenu(state.likes.getNumLikes())
+
+    // Render the existing likes
+    state.likes.likes.forEach(like => likesView.renderLike(like));
+})
 
 window.addEventListener('hashchange', controlRecipe);
 
@@ -231,5 +234,3 @@ elements.recipe.addEventListener('click', e => {
         controlLike();
     }
 }) 
-
-window.l = new List();
